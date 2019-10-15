@@ -59,7 +59,7 @@ resource "hcloud_server" "htz2" {
       sh -c 'apk add --no-cache openssh-client && \
       eval "$(ssh-agent -s)"; ssh-add /root/.ssh/hetzner && \
       export ANSIBLE_HOST_KEY_CHECKING=False && \
-      sleep 90 && \
+      export ANSIBLE_SSH_RETRIES=5 %% \
       ansible-playbook -i ${hcloud_server.htz2.ipv4_address}, -u root --diff -e ansible_python_interpreter=/usr/bin/python3 -e ansible_port=22 Kubes_worker.yml'
 EOT
   }
