@@ -1,4 +1,9 @@
 ## Start
+Create `terraform.tfvars` file with the Hetzner token. Like this:
+```
+hcloud_token = "TOKEN_GOES_HERE"
+```
+
 Run `terraform init` to get latest provider version that takes the correct server sizes
 
 ```
