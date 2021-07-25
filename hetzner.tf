@@ -43,12 +43,12 @@ output "ip" {
 }
 
 
-# Temporary worker node
+# New node
 resource "hcloud_server" "htz2" {
   name        = "htz2"
-  server_type = "cx11"
-  image       = "ubuntu-18.04"
-  location    = "hel1"
+  server_type = "cpx21"
+  image       = "ubuntu-20.04"
+  location    = "nbg1"
   ssh_keys    = ["hetzner_key"]
 
   provisioner "local-exec" {
@@ -59,7 +59,7 @@ resource "hcloud_server" "htz2" {
       sh -c 'apk add --no-cache openssh-client && \
       eval "$(ssh-agent -s)"; ssh-add /root/.ssh/hetzner && \
       export ANSIBLE_HOST_KEY_CHECKING=False && \
-      export ANSIBLE_SSH_RETRIES=5 %% \
+      export ANSIBLE_SSH_RETRIES=5 && \
       ansible-playbook -i ${hcloud_server.htz2.ipv4_address}, -u root --diff -e ansible_python_interpreter=/usr/bin/python3 -e ansible_port=22 Kubes_worker.yml'
 EOT
   }
