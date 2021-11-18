@@ -1,8 +1,15 @@
 # Configure the Hetzner Cloud Provider
+terraform {
+  required_providers {
+    hcloud = {
+      source  = "hetznercloud/hcloud"
+      version = "~> 1.32"
+    }
+  }
+}
 provider "hcloud" {
   token = "${var.hcloud_token}"
 }
-
 resource "hcloud_ssh_key" "hetzner_key" {
   name       = "hetzner_key"
   public_key = "${file("~/.ssh/hetzner.pub")}"
@@ -13,13 +20,14 @@ resource "hcloud_ssh_key" "hetzner_key" {
 
 resource "hcloud_server" "node1" {
   name        = "htz1"
-  server_type = "cx21"
+  server_type = "cpx11"
   image       = "ubuntu-18.04"
   location    = "hel1"
   ssh_keys    = ["hetzner_key"]
   lifecycle {
     prevent_destroy = true
   }
+  firewall_ids = [hcloud_firewall.firewall.id]
 }
 
 resource "hcloud_network" "htz_network" {
@@ -48,7 +56,7 @@ resource "hcloud_server" "htz2" {
   name        = "htz2"
   server_type = "cpx21"
   image       = "ubuntu-20.04"
-  location    = "nbg1"
+  location    = "hel1"
   ssh_keys    = ["hetzner_key"]
 
   provisioner "local-exec" {
