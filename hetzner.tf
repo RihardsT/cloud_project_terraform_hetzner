@@ -58,17 +58,25 @@ resource "hcloud_server" "htz2" {
   image       = "ubuntu-20.04"
   location    = "hel1"
   ssh_keys    = ["hetzner_key"]
+  firewall_ids = [hcloud_firewall.firewall.id]
 
   provisioner "local-exec" {
     command = <<EOT
-      docker run -i --rm -v ~/Code/CloudProject/cloud_project_ansible:/d \
-      -v ~/Code/CloudProject/Secrets/:/Secrets/ -v ~/.ssh/:/root/.ssh \
-      -w /d williamyeh/ansible:alpine3-onbuild \
-      sh -c 'apk add --no-cache openssh-client && \
-      eval "$(ssh-agent -s)"; ssh-add /root/.ssh/hetzner && \
-      export ANSIBLE_HOST_KEY_CHECKING=False && \
-      export ANSIBLE_SSH_RETRIES=5 && \
-      ansible-playbook -i ${hcloud_server.htz2.ipv4_address}, -u root --diff -e ansible_python_interpreter=/usr/bin/python3 -e ansible_port=22 Kubes_worker.yml'
+      export ANSIBLE_HOST_KEY_CHECKING=False && export ANSIBLE_SSH_RETRIES=5 && \
+      ansible-playbook -i ${hcloud_server.htz2.ipv4_address}, \
+      -e node_ip_address=${hcloud_server.htz2.ipv4_address} \
+      -u root --diff -e ansible_python_interpreter=/usr/bin/python3 -e ansible_port=22 \
+      /home/rihards/Code/cloud_project/cloud_project_ansible/Kubes_worker_htz.yml && \
+      kubectl apply -f /media/data/Code/cloud_project/cloud_project_kubernetes/Gitlab/gitlab.yml
+EOT
+  }
+  provisioner "local-exec" {
+    when    = destroy
+    # ssh -o "StrictHostKeyChecking=no" $(terraform output -state=/home/rihards/Code/cloud_project/cloud_project_terraform_gcp/terraform.tfstate | grep -oP '"\K[^"]+') 'sudo s3cmd put /data/gitlab/data/backups/$(sudo ls /data/gitlab/data/backups/) /data/gitlab/config/gitlab-secrets.json s3://rudenspavasaris'; \
+    # kubectl exec $(kubectl get pods --no-headers -o custom-columns=":metadata.name" | grep gitlab) -- bash -c 'gitlab-backup create' && \
+    command = <<EOT
+      kubectl delete -f /media/data/Code/cloud_project/cloud_project_kubernetes/Gitlab/gitlab.yml; \
+      kubectl delete node htz2;
 EOT
   }
 }

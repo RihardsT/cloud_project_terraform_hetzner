@@ -23,16 +23,40 @@ resource "hcloud_firewall" "firewall" {
     port      = "3013"
     source_ips = ["0.0.0.0/0", "::/0"]
   }
-  rule {
+  rule { # Kubernetes API
+    direction = "in"
+    protocol  = "tcp"
+    port      = "6443"
+    source_ips = ["0.0.0.0/0", "::/0"]
+  }
+  rule { # Minecraft
     direction = "in"
     protocol  = "tcp"
     port      = "25565"
     source_ips = ["0.0.0.0/0", "::/0"]
   }
-  rule {
+  rule { # Minecraft
     direction = "in"
     protocol  = "udp"
     port      = "25565"
+    source_ips = ["0.0.0.0/0", "::/0"]
+  }
+  rule { # SSH for temporary worker node
+    direction = "in"
+    protocol  = "tcp"
+    port      = "22"
+    source_ips = ["0.0.0.0/0", "::/0"]
+  }
+  rule { # Kubelet API, required to see logs
+    direction = "in"
+    protocol  = "tcp"
+    port      = "10250"
+    source_ips = ["0.0.0.0/0", "::/0"]
+  }
+  rule { # Flannel, required for container to container networking
+    direction = "in"
+    protocol  = "udp"
+    port      = "8472"
     source_ips = ["0.0.0.0/0", "::/0"]
   }
 }
