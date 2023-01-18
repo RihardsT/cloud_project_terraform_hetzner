@@ -5,10 +5,28 @@ resource "hcloud_firewall" "firewall" {
     protocol  = "icmp"
     source_ips = ["0.0.0.0/0", "::/0"]
   }
+  rule { # SSH for temporary worker node
+    direction = "in"
+    protocol  = "tcp"
+    port      = "22"
+    source_ips = ["0.0.0.0/0", "::/0"]
+  }
   rule {
     direction = "in"
     protocol  = "tcp"
     port      = "80"
+    source_ips = ["0.0.0.0/0", "::/0"]
+  }
+  rule { # ACME
+    direction = "in"
+    protocol  = "tcp"
+    port      = "81"
+    source_ips = ["0.0.0.0/0", "::/0"]
+  }
+  rule { # ACME
+    direction = "in"
+    protocol  = "udp"
+    port      = "81"
     source_ips = ["0.0.0.0/0", "::/0"]
   }
   rule {
@@ -41,12 +59,6 @@ resource "hcloud_firewall" "firewall" {
     port      = "25565"
     source_ips = ["0.0.0.0/0", "::/0"]
   }
-  rule { # SSH for temporary worker node
-    direction = "in"
-    protocol  = "tcp"
-    port      = "22"
-    source_ips = ["0.0.0.0/0", "::/0"]
-  }
   rule { # Kubelet API, required to see logs
     direction = "in"
     protocol  = "tcp"
@@ -59,4 +71,22 @@ resource "hcloud_firewall" "firewall" {
     port      = "8472"
     source_ips = ["0.0.0.0/0", "::/0"]
   }
+  # rule { # Flask test
+  #   direction = "in"
+  #   protocol  = "tcp"
+  #   port      = "5000"
+  #   source_ips = ["0.0.0.0/0", "::/0"]
+  # }
+  # rule { # OpenVPN
+  #   direction = "in"
+  #   protocol  = "udp"
+  #   port      = "1194"
+  #   source_ips = ["0.0.0.0/0", "::/0"]
+  # }
+  # rule { # OpenVPN
+  #   direction = "in"
+  #   protocol  = "tcp"
+  #   port      = "8088"
+  #   source_ips = ["0.0.0.0/0", "::/0"]
+  # }
 }
