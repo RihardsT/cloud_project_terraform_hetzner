@@ -4,11 +4,19 @@ Create `terraform.tfvars` file with the Hetzner token. Like this:
 hcloud_token = "TOKEN_GOES_HERE"
 ```
 
-Run `terraform init` to get latest provider version that takes the correct server sizes
+Run `terraform init -upgrade` to get latest provider version that takes the correct server sizes
 
 ```
 terraform plan
 terraform apply
+```
+Provision with ansible manually, when something fails
+```
+export ANSIBLE_HOST_KEY_CHECKING=False && export ANSIBLE_SSH_RETRIES=5 && \
+ansible-playbook -i 65.108.214.238, \
+-e node_ip_address=65.108.214.238 \
+-u root --diff -e ansible_python_interpreter=/usr/bin/python3 -e ansible_port=22 \
+/home/rihards/Code/cloud_project/cloud_project_ansible/htz1.yml
 ```
 
 ### Firewall rollout
@@ -42,3 +50,9 @@ hcloud_server.minecraft: Creation complete after 7m52s [id=19851477]
 
 With upgrade packages:
 hcloud_server.minecraft: Creation complete after 4m5s
+
+
+### Images
+curl \
+	-H "Authorization: Bearer $API_TOKEN" \
+	'https://api.hetzner.cloud/v1/images'
