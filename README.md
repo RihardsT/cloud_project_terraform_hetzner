@@ -1,3 +1,9 @@
+# Quick
+cd ~/Code/cloud_project/cloud_project_terraform_hetzner
+terraform apply -target=hcloud_server.htz1 -auto-approve
+
+terraform destroy -target=hcloud_server.htz1 -auto-approve
+
 ## Start
 Create `terraform.tfvars` file with the Hetzner token. Like this:
 ```
@@ -12,10 +18,11 @@ terraform apply
 ```
 Provision with ansible manually, when something fails
 ```
+SERVER_IP=95.217.161.140
 export ANSIBLE_HOST_KEY_CHECKING=False && export ANSIBLE_SSH_RETRIES=5 && \
-ansible-playbook -i 65.108.214.238, \
--e node_ip_address=65.108.214.238 \
--u root --diff -e ansible_python_interpreter=/usr/bin/python3 -e ansible_port=22 \
+ansible-playbook -i ${SERVER_IP}, \
+-e node_ip_address=${SERVER_IP} \
+--diff -e ansible_python_interpreter=/usr/bin/python3 -e ansible_port=22 \
 /home/rihards/Code/cloud_project/cloud_project_ansible/htz1.yml
 ```
 
@@ -43,14 +50,6 @@ terraform apply -auto-approve -target=hcloud_server.minecraft
 
 cd ~/Code/cloud_project/cloud_project_terraform_hetzner
 terraform destroy -auto-approve -target=hcloud_server.minecraft
-
-
-Without upgrade packages, Kubectl apply at end:
-hcloud_server.minecraft: Creation complete after 7m52s [id=19851477]
-
-With upgrade packages:
-hcloud_server.minecraft: Creation complete after 4m5s
-
 
 ### Images
 curl \
