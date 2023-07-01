@@ -1,8 +1,11 @@
 # Quick
-cd ~/Code/cloud_project/cloud_project_terraform_hetzner
-terraform apply -target=hcloud_server.htz1 -auto-approve
-
-terraform destroy -target=hcloud_server.htz1 -auto-approve
+Set up alias, to this really quickly and easy
+```
+tee -a .bashrc <<EOF
+alias htz_up="terraform -chdir=/media/data/Code/cloud_project/cloud_project_terraform_hetzner/ apply -target=hcloud_server.htz1 -auto-approve"
+alias htz_down="terraform -chdir=/media/data/Code/cloud_project/cloud_project_terraform_hetzner/ destroy -target=hcloud_server.htz1 -auto-approve"
+EOF
+```
 
 ## Start
 Create `terraform.tfvars` file with the Hetzner token. Like this:
@@ -18,7 +21,7 @@ terraform apply
 ```
 Provision with ansible manually, when something fails
 ```
-SERVER_IP=95.217.161.140
+SERVER_IP=rudenspavasaris.id.lv
 export ANSIBLE_HOST_KEY_CHECKING=False && export ANSIBLE_SSH_RETRIES=5 && \
 ansible-playbook -i ${SERVER_IP}, \
 -e node_ip_address=${SERVER_IP} \

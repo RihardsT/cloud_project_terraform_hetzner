@@ -89,4 +89,10 @@ resource "hcloud_firewall" "firewall" {
   #   port      = "8088"
   #   source_ips = ["0.0.0.0/0", "::/0"]
   # }
+  rule { # Local Fleet server for testing only
+    direction = "in"
+    protocol  = "tcp"
+    port      = "8220"
+    source_ips = ["0.0.0.0/0", "::/0"]
+  }
 }
