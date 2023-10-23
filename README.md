@@ -1,13 +1,17 @@
+# TO DO
+- [ ] Save state in Gitlab?
+
 # Quick
 Set up alias, to this really quickly and easy
 ```
-tee -a .bashrc <<EOF
-alias htz_up="terraform -chdir=/media/data/Code/cloud_project/cloud_project_terraform_hetzner/ apply -target=hcloud_server.htz1 -auto-approve"
-alias htz_down="terraform -chdir=/media/data/Code/cloud_project/cloud_project_terraform_hetzner/ destroy -target=hcloud_server.htz1 -auto-approve"
+tee -a ~/.bashrc <<EOF
+alias htz_up="terraform -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ apply -target=hcloud_server.htz1 -auto-approve"
+alias htz_down="terraform -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ destroy -target=hcloud_server.htz1 -auto-approve"
 EOF
 ```
 
 ## Start
+Create token in Hetzner Cloud -> Security -> Tokens
 Create `terraform.tfvars` file with the Hetzner token. Like this:
 ```
 hcloud_token = "TOKEN_GOES_HERE"
