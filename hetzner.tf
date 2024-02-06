@@ -8,11 +8,11 @@ terraform {
   }
 }
 provider "hcloud" {
-  token = "${var.hcloud_token}"
+  token = var.hcloud_token
 }
 resource "hcloud_ssh_key" "hetzner_key" {
   name       = "hetzner_key"
-  public_key = "${file("~/.ssh/id_ed25519.pub")}"
+  public_key = file("~/.ssh/id_ed25519.pub")
   # lifecycle {
   #   prevent_destroy = true
   # }

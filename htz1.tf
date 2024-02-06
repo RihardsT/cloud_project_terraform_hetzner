@@ -24,8 +24,8 @@ resource "hcloud_server" "htz1" {
 }
 
 output "ip" {
-  value = "${hcloud_server.htz1.ipv4_address}"
+  value = hcloud_server.htz1.ipv4_address
 }
 output "ipv6" {
-  value = "${hcloud_server.htz1.ipv6_address}"
+  value = hcloud_server.htz1.ipv6_address
 }

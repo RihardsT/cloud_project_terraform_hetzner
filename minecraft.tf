@@ -1,9 +1,9 @@
 resource "hcloud_server" "minecraft" {
-  name        = "minecraft"
-  server_type = "cpx21"
-  image       = "ubuntu-22.04"
-  location    = "hel1"
-  ssh_keys    = ["hetzner_key"]
+  name         = "minecraft"
+  server_type  = "cpx21"
+  image        = "ubuntu-22.04"
+  location     = "hel1"
+  ssh_keys     = ["hetzner_key"]
   firewall_ids = [hcloud_firewall.firewall.id]
 
   provisioner "local-exec" {
@@ -32,5 +32,5 @@ EOT
 # }
 
 output "minecraft" {
-  value = "${hcloud_server.minecraft.ipv4_address}"
+  value = hcloud_server.minecraft.ipv4_address
 }
