@@ -2,11 +2,12 @@
 - [ ] Save state in Gitlab?
 
 # Quick
-Set up alias, to this really quickly and easy
+Set up silly alias, to this really quickly and easy
 ```
 tee -a ~/.bashrc <<EOF
 alias htz_up="terraform -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ apply -target=hcloud_server.htz1 -auto-approve"
 alias htz_down="terraform -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ destroy -target=hcloud_server.htz1 -auto-approve"
+alias htz_sh="ssh rudenspavasaris.id.lv -o StrictHostKeyChecking=no"
 EOF
 ```
 
@@ -19,10 +20,12 @@ hcloud_token = "TOKEN_GOES_HERE"
 
 Run `terraform init -upgrade` to get latest provider version that takes the correct server sizes
 
+Create dependencies - firewall and ssh key, as I'm going to do as one shouldn't:
+using targets. Eh
 ```
-terraform plan
-terraform apply
+terraform -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ apply -target=hcloud_ssh_key.hetzner_key -target=hcloud_firewall.firewall -auto-approve
 ```
+
 Provision with ansible manually, when something fails
 ```
 SERVER_IP=rudenspavasaris.id.lv
