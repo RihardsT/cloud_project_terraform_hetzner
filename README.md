@@ -7,7 +7,7 @@ Set up silly alias, to this really quickly and easy
 tee -a ~/.bashrc <<EOF
 alias htz_up="terraform -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ apply -target=hcloud_server.htz1 -auto-approve"
 alias htz_down="terraform -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ destroy -target=hcloud_server.htz1 -auto-approve"
-alias htz_sh="ssh rudenspavasaris.id.lv -o StrictHostKeyChecking=no"
+alias htz_ssh="ssh rudenspavasaris.id.lv -o StrictHostKeyChecking=no -o 'UserKnownHostsFile=/dev/null'"
 EOF
 ```
 

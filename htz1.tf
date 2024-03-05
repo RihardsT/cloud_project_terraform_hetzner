@@ -1,6 +1,7 @@
 resource "hcloud_server" "htz1" {
   name        = "htz1"
-  server_type = "cpx31"
+  # server_type = "cpx31"
+  server_type = "cax21" # This one seems slower to setup than AMD one
   image       = "ubuntu-22.04"
   location    = "hel1"
   ssh_keys    = ["hetzner_key"]
