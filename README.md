@@ -69,3 +69,16 @@ terraform destroy -auto-approve -target=hcloud_server.minecraft
 curl \
 	-H "Authorization: Bearer $API_TOKEN" \
 	'https://api.hetzner.cloud/v1/images'
+
+### Import resources
+First get IDs via API. Reference:  
+https://docs.hetzner.cloud/
+```
+curl -H "Authorization: Bearer $(cat terraform.tfvars | grep -oP '"\K[^"]+')" \
+	"https://api.hetzner.cloud/v1/firewalls"
+curl -H "Authorization: Bearer $(cat terraform.tfvars | grep -oP '"\K[^"]+')" \
+	"https://api.hetzner.cloud/v1/ssh_keys"
+
+terraform import hcloud_firewall.firewall 1238619
+terraform import hcloud_ssh_key.hetzner_key 19311507
+```
