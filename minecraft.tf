@@ -1,4 +1,5 @@
 resource "hcloud_server" "minecraft" {
+  count = 0
   name         = "minecraft"
   server_type  = "cpx21"
   image        = "ubuntu-22.04"
@@ -32,5 +33,5 @@ EOT
 # }
 
 output "minecraft" {
-  value = hcloud_server.minecraft.ipv4_address
+  value = hcloud_server.minecraft[*].ipv4_address
 }

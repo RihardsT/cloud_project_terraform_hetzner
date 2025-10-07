@@ -1,8 +1,9 @@
 resource "hcloud_server" "htz1" {
+  count = 0
   name        = "htz1"
   # server_type = "cpx31"
   server_type = "cax21" # This one seems slower to setup than AMD one
-  image       = "ubuntu-22.04"
+  image       = "ubuntu-24.04"
   location    = "hel1"
   ssh_keys    = ["hetzner_key"]
   # lifecycle {
@@ -25,8 +26,8 @@ resource "hcloud_server" "htz1" {
 }
 
 output "ip" {
-  value = hcloud_server.htz1.ipv4_address
+  value = hcloud_server.htz1[*].ipv4_address
 }
 output "ipv6" {
-  value = hcloud_server.htz1.ipv6_address
+  value = hcloud_server.htz1[*].ipv6_address
 }
