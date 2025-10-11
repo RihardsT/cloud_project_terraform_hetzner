@@ -17,6 +17,10 @@ resource "hcloud_ssh_key" "hetzner_key" {
   #   prevent_destroy = true
   # }
 }
+resource "hcloud_ssh_key" "hetzner_key_alt" {
+  name       = "hetzner_key_alt"
+  public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII+6+zyGdusVLIsx+nnqo4/3qeylb8aFBmCS2wolK3kB"
+}
 
 # resource "hcloud_network" "htz_network" {
 #   name = "htz_network"

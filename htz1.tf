@@ -1,11 +1,11 @@
 resource "hcloud_server" "htz1" {
-  count = 0
+  count = 1
   name        = "htz1"
   # server_type = "cpx31"
   server_type = "cax21" # This one seems slower to setup than AMD one
   image       = "ubuntu-24.04"
   location    = "hel1"
-  ssh_keys    = ["hetzner_key"]
+  ssh_keys    = ["hetzner_key", "hetzner_key_alt"]
   # lifecycle {
   #   prevent_destroy = true
   # }
@@ -22,7 +22,9 @@ resource "hcloud_server" "htz1" {
     -u root --diff -e ansible_python_interpreter=/usr/bin/python3 -e ansible_port=22 \
     /home/rihards/Code/cloud_project/cloud_project_ansible/htz1.yml
     EOT
+    on_failure = continue
   }
+  depends_on = [ hcloud_ssh_key.hetzner_key, hcloud_ssh_key.hetzner_key_alt ]
 }
 
 output "ip" {

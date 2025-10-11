@@ -82,3 +82,17 @@ curl -H "Authorization: Bearer $(cat terraform.tfvars | grep -oP '"\K[^"]+')" \
 terraform import hcloud_firewall.firewall 1238619
 terraform import hcloud_ssh_key.hetzner_key 19311507
 ```
+
+
+### hcloud cli
+https://github.com/hetznercloud/cli/blob/main/docs/tutorials/setup-hcloud-cli.md
+```shell
+curl -sSLO https://github.com/hetznercloud/cli/releases/latest/download/hcloud-linux-amd64.tar.gz
+sudo tar -C /usr/local/bin --no-same-owner -xzf hcloud-linux-amd64.tar.gz hcloud
+rm hcloud-linux-amd64.tar.gz
+
+# source <(hcloud completion bash)
+hcloud completion fish > ~/.config/fish/completions/hcloud.fish
+
+hcloud context create default
+```
