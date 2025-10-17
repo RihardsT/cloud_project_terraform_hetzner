@@ -5,11 +5,11 @@
 Set up silly alias, to this really quickly and easy
 ```
 tee -a ~/.bash_aliases <<EOF
-alias htz_up="terraform -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ apply -target=hcloud_server.htz1 -auto-approve"
-alias htz_down="terraform -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ destroy -target=hcloud_server.htz1 -auto-approve"
-alias htz_ssh="ssh rudenspavasaris.id.lv -o StrictHostKeyChecking=no -o 'UserKnownHostsFile=/dev/null'"
-alias htz_ansible="ansible-playbook -i $(terraform -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ output -raw ip), \
-    -e node_ip_address=$(terraform -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ output -raw ip) \
+alias htz_up="tofu -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ apply -auto-approve -var='htz1=true'"
+alias htz_down="tofu -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ apply -auto-approve -var='htz1=false'"
+alias rpssh="ssh rudenspavasaris.id.lv -o StrictHostKeyChecking=no -o 'UserKnownHostsFile=/dev/null'"
+alias htz_ansible="ansible-playbook -i $(tofu -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ output -json ip | jq -r '.[]'), \
+    -e node_ip_address=$(tofu -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ output -json ip | jq -r '.[]') \
     -u rihards --diff -e ansible_python_interpreter=/usr/bin/python3 -e ansible_port=22 \
     /home/rihards/Code/cloud_project/cloud_project_ansible/htz1.yml"
 EOF

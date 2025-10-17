@@ -1,6 +1,6 @@
 resource "hcloud_server" "htz1" {
-  count = 1
-  name        = "htz1"
+  count = var.htz1 ? 1 : 0
+  name  = "htz1"
   # server_type = "cpx31"
   server_type = "cax21" # This one seems slower to setup than AMD one
   image       = "ubuntu-24.04"
@@ -15,7 +15,7 @@ resource "hcloud_server" "htz1" {
     ipv6_enabled = true
   }
   provisioner "local-exec" {
-    command = <<EOT
+    command    = <<EOT
     export ANSIBLE_HOST_KEY_CHECKING=False && export ANSIBLE_SSH_RETRIES=5 && \
     ansible-playbook -i ${self.ipv4_address}, \
     -e node_ip_address=${self.ipv4_address} \
@@ -24,7 +24,7 @@ resource "hcloud_server" "htz1" {
     EOT
     on_failure = continue
   }
-  depends_on = [ hcloud_ssh_key.hetzner_key, hcloud_ssh_key.hetzner_key_alt ]
+  depends_on = [hcloud_ssh_key.hetzner_key, hcloud_ssh_key.hetzner_key_alt]
 }
 
 output "ip" {

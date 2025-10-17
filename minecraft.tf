@@ -1,5 +1,5 @@
 resource "hcloud_server" "minecraft" {
-  count = 0
+  count        = 0
   name         = "minecraft"
   server_type  = "cpx21"
   image        = "ubuntu-22.04"
