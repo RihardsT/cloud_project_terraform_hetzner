@@ -14,11 +14,15 @@ alias htz_ansible="ansible-playbook -i $(tofu -chdir=/home/rihards/Code/cloud_pr
     /home/rihards/Code/cloud_project/cloud_project_ansible/htz1.yml"
 EOF
 ```
+### Migrate state to Gitlab
+```shell
+tofu init -backend-config=secrets/backend -upgrade
+```
 
 ## Start
 Create token in Hetzner Cloud -> Security -> Tokens
 Create `terraform.tfvars` file with the Hetzner token. Like this:
-```
+```shell
 hcloud_token = "TOKEN_GOES_HERE"
 ```
 
@@ -26,12 +30,12 @@ Run `terraform init -upgrade` to get latest provider version that takes the corr
 
 Create dependencies - firewall and ssh key, as I'm going to do as one shouldn't:
 using targets. Eh
-```
+```shell
 terraform -chdir=/home/rihards/Code/cloud_project/cloud_project_terraform_hetzner/ apply -target=hcloud_ssh_key.hetzner_key -target=hcloud_firewall.firewall -auto-approve
 ```
 
 Provision with ansible manually, when something fails
-```
+```shell
 SERVER_IP=rudenspavasaris.id.lv
 export ANSIBLE_HOST_KEY_CHECKING=False && export ANSIBLE_SSH_RETRIES=5 && \
 ansible-playbook -i ${SERVER_IP}, \
@@ -44,14 +48,14 @@ ansible-playbook -i ${SERVER_IP}, \
 Needed to update the provider, as I hadn't ran this is in a long time.
 `terraform state replace-provider registry.terraform.io/-/hcloud hetznercloud/hcloud`
 Needed to also add the `terraform` `required_providers` block.
-```
+```shell
 cd ~/Code/cloud_project/cloud_project_terraform_hetzner
 terraform apply -target=hcloud_firewall.firewall
 terraform apply -target=hcloud_server.node1
 ```
 
 ### Temporary worker node
-```
+```shell
 cd ~/Code/cloud_project/cloud_project_terraform_hetzner
 terraform apply -target=hcloud_server_network.htz2_srv_net -target=hcloud_server.htz2
 
@@ -59,21 +63,25 @@ terraform destroy -target=hcloud_server.htz2 -target=hcloud_server_network.htz2_
 ```
 
 ### Temporary Minecraft node
+```shell
 cd ~/Code/cloud_project/cloud_project_terraform_hetzner
 terraform apply -auto-approve -target=hcloud_server.minecraft
 
 cd ~/Code/cloud_project/cloud_project_terraform_hetzner
 terraform destroy -auto-approve -target=hcloud_server.minecraft
+```
 
 ### Images
+```shell
 curl \
 	-H "Authorization: Bearer $API_TOKEN" \
 	'https://api.hetzner.cloud/v1/images'
+```
 
 ### Import resources
 First get IDs via API. Reference:  
 https://docs.hetzner.cloud/
-```
+```shell
 curl -H "Authorization: Bearer $(cat terraform.tfvars | grep -oP '"\K[^"]+')" \
 	"https://api.hetzner.cloud/v1/firewalls"
 curl -H "Authorization: Bearer $(cat terraform.tfvars | grep -oP '"\K[^"]+')" \

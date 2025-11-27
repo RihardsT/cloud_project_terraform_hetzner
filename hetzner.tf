@@ -6,17 +6,17 @@ terraform {
       version = "~> 1.36"
     }
   }
+  backend "http" {}
 }
 provider "hcloud" {
   token = var.hcloud_token
 }
+
 resource "hcloud_ssh_key" "hetzner_key" {
   name       = "hetzner_key"
   public_key = file("~/.ssh/id_ed25519.pub")
-  # lifecycle {
-  #   prevent_destroy = true
-  # }
 }
+
 resource "hcloud_ssh_key" "hetzner_key_alt" {
   name       = "hetzner_key_alt"
   public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII+6+zyGdusVLIsx+nnqo4/3qeylb8aFBmCS2wolK3kB"

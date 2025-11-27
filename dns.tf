@@ -24,9 +24,7 @@ resource "hcloud_zone_rrset" "rudenspavasaris" {
 
 data "terraform_remote_state" "oracle_state" {
   backend = "http"
-  config = {
-    ### See if these necessary variable can be loaded from file
-  }
+  config = yamldecode(file("secrets/oracle_backend.yaml"))
 }
 
 # tfer output oc0_pub_ip
